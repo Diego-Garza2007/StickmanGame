@@ -68,6 +68,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 20,
       repeat: 0,
     });
+       // Animación de idle
+       scene.anims.create({
+        key: 'idle',
+        frames: [
+          { key: 'idle1' },
+          { key: 'idle2' },
+          { key: 'idle3' },
+          { key: 'idle4' },
+          { key: 'idle5' },
+        ],
+        frameRate: 10,
+        repeat: -1,
+      });
   }
 
   update(keys) {
@@ -90,7 +103,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.setFlipX(false);
     } else {
       this.setVelocityX(0);
-      if (!this.isAttacking) this.anims.stop(); // Detener animación solo si no está atacando
+      if (!this.isAttacking) {
+        this.anims.play('idle', true); // Reproducir animación de idle
+      }
     }
 
     // Salto
@@ -118,9 +133,32 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if (!this.isAttacking) {
       this.isAttacking = true;
       this.anims.play('attack', true);
+  
+      // Hacer visible la hitbox cuando el jugador ataca
+      this.attackHitbox.setVisible(true);
+  
+      // Actualizar la posición de la hitbox según la dirección del jugador
+      this.updateAttackHitbox();
+      // Variable para asegurar que el daño se aplica una sola vez
+      let hasDamaged = false;
 
+      // Verificar colisiones con los enemigos
+      this.scene.physics.add.overlap(this.attackHitbox, this.scene.enemiesGroup, (hitbox, enemy) => {
+        if (!hasDamaged) {
+          enemy.takeDamage(1);
+          hasDamaged = true;
+        }
+      });
+  
+      // Después de 500ms, ocultar la hitbox y finalizar el ataque
       this.scene.time.delayedCall(500, () => {
         this.isAttacking = false;
+        this.attackHitbox.setVisible(false);  // Ocultar la hitbox después del ataque
+      });
+  
+      // Ocultar la hitbox inmediatamente después de que termine la animación de ataque
+      this.scene.time.delayedCall(500, () => {
+        this.attackHitbox.setVisible(false);  // Desactivar la hitbox
       });
     }
   }

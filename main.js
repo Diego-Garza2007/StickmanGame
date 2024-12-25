@@ -16,7 +16,7 @@ const config = {
       debug: false
     }
   },
-  scene: [BootScene, PreloadScene, GameScene, Room2Scene, GameOverScene] // Asegúrate de que 'Room2Scene' esté aquí
+  scene: [BootScene, PreloadScene, Room2Scene, GameScene , GameOverScene] // Asegúrate de que 'Room2Scene' esté aquí
 };
 
 const game = new Phaser.Game(config);

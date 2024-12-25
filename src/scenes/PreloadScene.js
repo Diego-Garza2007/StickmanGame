@@ -25,6 +25,13 @@ export default class PreloadScene extends Phaser.Scene {
       this.load.image('walkR9', 'assets/walkRightSprites/batch_Layer_9.png')
       this.load.image('walkR10', 'assets/walkRightSprites/batch_Layer_10.png')
 
+      //Idle Default
+      this.load.image('idle1', 'assets/idleSprites/batch_Layer_1_idleDefault.png')
+      this.load.image('idle2', 'assets/idleSprites/batch_Layer_2_idleDefault.png')
+      this.load.image('idle3', 'assets/idleSprites/batch_Layer_3_idleDefault.png')
+      this.load.image('idle4', 'assets/idleSprites/batch_Layer_4_idleDefault.png')
+      this.load.image('idle5', 'assets/idleSprites/batch_Layer_5_idleDefault.png')
+
       // Punch
       this.load.image('punchR1', 'assets/punchSprites/batch_Layer_1_punch.png')
       this.load.image('punchR2', 'assets/punchSprites/batch_Layer_2_punch.png')

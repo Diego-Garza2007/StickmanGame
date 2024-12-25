@@ -15,13 +15,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setVelocityX(50);  // Velocidad inicial hacia la derecha
 
       this.health = 3; // Salud del enemigo
+
+
+    // Asegurar que el enemigo no caiga del piso
+    this.body.setGravityY(300); // Aplica gravedad al enemigo para que caiga si no está sobre una plataforma
+    this.setImmovable(true); // Esto asegura que el enemigo no se mueva con colisiones
     }
   
     update() {
       // Lógica de movimiento
       if (this.body.velocity.x > 0) {
         // Movimiento hacia la derecha
-        if (this.x >= 750) {  // Si llega al borde derecho, cambia de dirección
+        if (this.x >= 1850) {  // Si llega al borde derecho, cambia de dirección
           this.setVelocityX(-50);
         }
       } else {
@@ -31,8 +36,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
       }
     }
-    takeDamage() {
-      this.health -= 1;
+    takeDamage(amount) {
+      this.health -= amount;
+      console.log(this.health);
       if (this.health <= 0) {
         this.destroy(); // Destruir enemigo cuando su salud sea 0
       }

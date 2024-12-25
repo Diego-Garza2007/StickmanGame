@@ -1,7 +1,7 @@
 import Player from "../objects/Player.js";
 import Enemy from "../objects/Enemy.js"; // Importar la clase Enemy
 import LifeSystem from "../Systems/LifeSystem.js";
-import GameScene from "./GameScene.js";
+import CollisionHandler from "../Systems/CollisionHandler.js";
 
 export default class Room2Scene extends Phaser.Scene {
   constructor() {
@@ -21,33 +21,35 @@ export default class Room2Scene extends Phaser.Scene {
     this.player = new Player(this, 50, 300, "player"); // Mueve al jugador al inicio
     this.physics.add.collider(this.player, ground); // Colisión con el suelo
 
-    // Crear grupo de enemigos
+    // Crear un grupo de enemigos
     this.enemiesGroup = this.physics.add.group();
+
+    // Crear instancias de enemigos y agregarlos al grupo
+    this.enemiesGroup.add(new Enemy(this, 400, 300, 'enemyTexture'));
+    this.enemiesGroup.add(new Enemy(this, 600, 500, 'enemyTexture'));
     this.physics.add.collider(this.enemiesGroup, ground);
 
-    // Crear enemigos
-    this.createEnemy(400, 300);
-    this.createEnemy(600, 500);
 
-    // Colisiones entre el jugador y los enemigos
-    this.physics.add.collider(this.player, this.enemiesGroup, this.handlePlayerEnemyCollision, null, this);
+  
 
-    // Colisión entre la hitbox del jugador y los enemigos
-    this.physics.add.overlap(
-      this.player.attackHitbox,
-      this.enemiesGroup,
-      (hitbox, enemy) => {
-        enemy.takeDamage(); // Reducir salud del enemigo
-      },
-      null,
-      this
-    );
-
-    // Sistema de vidas
-    if (!this.lifeSystem) {
+    // Crear o restaurar el sistema de vidas
+    if (!this.registry.get("lifeSystem")) {
       this.lifeSystem = new LifeSystem(this);
+      this.registry.set("lifeSystem", this.lifeSystem);
+    } else {
+      // Recuperar la cantidad de vidas desde playerState y restaurar el lifeSystem
+      const playerState = this.registry.get("playerState");
+      this.lifeSystem = new LifeSystem(this);
+      this.lifeSystem.setLives(playerState ? playerState.health : 3); // Restaurar las vidas, por ejemplo 3 si no se encontró playerState
+    }
+
+    // Crear corazones si aún no existen
+    if (this.lifeSystem.hearts.length === 0) {
       this.lifeSystem.createHearts();
     }
+
+   // Instanciar el manejador de colisiones
+   this.collisionHandler = new CollisionHandler(this, this.player, this.enemiesGroup, this.lifeSystem);
 
     // Configurar controles personalizados
     this.keys = this.input.keyboard.addKeys({
@@ -87,7 +89,7 @@ export default class Room2Scene extends Phaser.Scene {
 
   changeRoom(roomName) {
     // Detener la escena actual y empezar la nueva
-    this.scene.start(GameScene); // Cambiar a la escena que se pasa como parámetro
+    this.scene.start(roomName); // Cambiar a la escena que se pasa como parámetro
   }
 
   handlePlayerEnemyCollision(player, enemy) {
