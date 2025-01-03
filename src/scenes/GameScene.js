@@ -1,6 +1,6 @@
 import Player from "../objects/Player.js";
 import LifeSystem from "../Systems/LifeSystem.js";
-import Room2Scene from "./Room2Scene.js";
+import Npc from "../objects/Npc.js"
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -16,6 +16,10 @@ export default class GameScene extends Phaser.Scene {
     // Crear suelo
     const ground = this.physics.add.staticGroup();
     ground.create(400, 580, "ground").setScale(100, 1).refreshBody();
+    ground.create(1000, 500, "ground").setScale(1, 1).refreshBody();
+    ground.create(1250, 460, "ground").setScale(1, 1).refreshBody();
+    ground.create(1450, 400, "ground").setScale(1, 1).refreshBody();
+    ground.create(1800, 500, "ground").setScale(2, 10).refreshBody();
 
     // Crear al jugador en la nueva posición
     this.player = new Player(this, 100, 500, "player");
@@ -49,55 +53,21 @@ export default class GameScene extends Phaser.Scene {
       E: Phaser.Input.Keyboard.KeyCodes.E,
     });
 
-    // Crear NPC
-    this.npc = this.add.sprite(600, 525, "npc").setScale(0.1);
-    this.physics.world.enable(this.npc);
-    this.npc.body.allowGravity = false;
+    // Crear una instancia del NPC
+    this.npc = new Npc(this, 600, 525);
 
-    // Instrucciones
-    this.instructionsText = this.add
-      .text(500, 350, "", {
-        font: "20px Arial",
-        fill: "#fff",
-        backgroundColor: "#000",
-        padding: { x: 10, y: 10 },
-        wordWrap: { width: 400, useAdvancedWrap: true },
-      })
-      .setAlpha(0); // Invisible al inicio
   }
 
   update() {
-    // Controles del jugador
+    // Actualizar al jugador con los controles
     this.player.update(this.keys);
+    
+        // Verificar proximidad con el NPC
+        this.npc.checkProximity(this.player);
 
-    // Mostrar instrucciones si está cerca del NPC
-    if (
-      Phaser.Math.Distance.Between(
-        this.player.x,
-        this.player.y,
-        this.npc.x,
-        this.npc.y
-      ) < 100
-    ) {
-      this.showInstructions(true);
-    } else {
-      this.showInstructions(false);
-    }
-
-    // Cambio de habitación al alcanzar el borde derecho
-    if (this.player.x > 1000) {
+            // Cambio de habitación al alcanzar el borde derecho
+    if (this.player.x > 1850) {
       this.changeRoom("Room2Scene"); // Cambiar a Room2Scene
-    }
-  }
-
-  showInstructions(visible) {
-    if (visible) {
-      this.instructionsText.setText(
-        "Controles del Juego:\n- A: Mover a la izquierda\n- D: Mover a la derecha\n- SPACE: Saltar"
-      );
-      this.instructionsText.setAlpha(1);
-    } else {
-      this.instructionsText.setAlpha(0);
     }
   }
 

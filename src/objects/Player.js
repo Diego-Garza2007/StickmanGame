@@ -45,7 +45,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         { key: 'walkR9' },
         { key: 'walkR10' },
       ],
-      frameRate: 10,
+      frameRate: 20,
       repeat: -1,
     });
 
@@ -135,7 +135,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.anims.play('attack', true);
   
       // Hacer visible la hitbox cuando el jugador ataca
-      this.attackHitbox.setVisible(true);
+      this.attackHitbox.setVisible(false);
   
       // Actualizar la posición de la hitbox según la dirección del jugador
       this.updateAttackHitbox();
@@ -145,7 +145,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       // Verificar colisiones con los enemigos
       this.scene.physics.add.overlap(this.attackHitbox, this.scene.enemiesGroup, (hitbox, enemy) => {
         if (!hasDamaged) {
-          enemy.takeDamage(1);
+          let direction = (this.x < enemy.x) ? 'left' : 'right';
+          enemy.takeDamage(1, direction);
           hasDamaged = true;
         }
       });
