@@ -3,19 +3,24 @@ import Enemy from "../objects/Enemy.js"; // Importar la clase Enemy
 import LifeSystem from "../Systems/LifeSystem.js";
 import CollisionHandler from "../Systems/CollisionHandler.js";
 
-export default class Room2Scene extends Phaser.Scene {
+export default class Room3Scene extends Phaser.Scene {
   constructor() {
-    super("Room2Scene");
+    super("Room3Scene");
   }
 
   create() {
     // Agregar la imagen de fondo para la segunda habitación
-    const bg = this.add.image(0, 0, "background2").setOrigin(0, 0);
+    const bg = this.add.image(0, 0, "background3").setOrigin(0, 0);
     bg.setDisplaySize(this.scale.width, this.scale.height);
     
     // Crear el suelo
     const ground = this.physics.add.staticGroup();
     ground.create(400, 580, "ground").setScale(100, 1).refreshBody();
+    ground.create(400, 300, "ground").setScale(10, 1).refreshBody();
+    ground.create(700, 450, "ground").setScale(1, 1).refreshBody();
+    ground.create(900, 300, "ground").setScale(10, 1).refreshBody();
+    ground.create(1200, 450, "ground").setScale(1, 1).refreshBody();
+    ground.create(1400, 300, "ground").setScale(10, 1).refreshBody();
 
     // Crear al jugador
     this.player = new Player(this, 80, 400, "player"); // Mueve al jugador al inicio
@@ -25,10 +30,16 @@ export default class Room2Scene extends Phaser.Scene {
     this.enemiesGroup = this.physics.add.group();
 
     // Crear instancias de enemigos y agregarlos al grupo
+    this.enemiesGroup.add(new Enemy(this, 400, 200, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 450, 200, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 900, 200, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 950, 200, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 1400, 200, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 1450, 200, 'player'));
     this.enemiesGroup.add(new Enemy(this, 400, 519, 'player'));
-    this.enemiesGroup.add(new Enemy(this, 600, 519, 'player'));
-    this.enemiesGroup.add(new Enemy(this, 800, 519, 'player'));
-    this.enemiesGroup.add(new Enemy(this, 1000, 519, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 1700, 519, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 900, 519, 'player'));
+    this.enemiesGroup.add(new Enemy(this, 1300, 519, 'player'));
     this.enemiesGroup.add(new Enemy(this, 1200, 519, 'player'));
     this.physics.add.collider(this.enemiesGroup, ground);
 
@@ -86,7 +97,7 @@ export default class Room2Scene extends Phaser.Scene {
 
     // Verificar si el jugador llega al borde izquierdo para regresar a la habitación anterior
     if (this.player.x > 1850) {
-      this.changeRoom("Room3Scene"); // Regresar a la habitación original
+      this.changeRoom("Room4Scene"); // Regresar a la habitación original
     }
   }
 

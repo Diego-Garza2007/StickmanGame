@@ -3,6 +3,12 @@ import PreloadScene from './src/scenes/PreloadScene.js';
 import GameScene from './src/scenes/GameScene.js';
 import Room2Scene from './src/scenes/Room2Scene.js'; // Nueva escena
 import GameOverScene from './src/scenes/GameOverScene.js';
+import Room3Scene from './src/scenes/Room3Scene.js';
+import Room4Scene from './src/scenes/Room4Scene.js';
+import RoomFinalScene from './src/scenes/RoomFinal.js';
+import CreditScene from './src/scenes/CreditScene.js'
+import MenuInicio from './src/scenes/MenuScene.js'
+
 
 const config = {
   type: Phaser.AUTO,
@@ -16,7 +22,7 @@ const config = {
       debug: false
     }
   },
-  scene: [BootScene, PreloadScene, GameScene, Room2Scene, GameOverScene] // Asegúrate de que 'Room2Scene' esté aquí
+  scene: [BootScene, PreloadScene, MenuInicio, CreditScene, RoomFinalScene, Room4Scene, Room3Scene, Room2Scene, GameScene , GameOverScene] // Asegúrate de que 'Room2Scene' esté aquí
 };
 
 const game = new Phaser.Game(config);
