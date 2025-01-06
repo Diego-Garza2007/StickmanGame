@@ -135,7 +135,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.anims.play('attack', true);
   
       // Hacer visible la hitbox cuando el jugador ataca
-      this.attackHitbox.setVisible(false);
+      this.attackHitbox.setVisible(true);
   
       // Actualizar la posición de la hitbox según la dirección del jugador
       this.updateAttackHitbox();
@@ -155,6 +155,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.scene.time.delayedCall(500, () => {
         this.isAttacking = false;
         this.attackHitbox.setVisible(false);  // Ocultar la hitbox después del ataque
+        this.attackHitbox.setSize(50, 50);  // Ajusta el tamaño original de la hitbox (ancho, alto)
       });
   
       // Ocultar la hitbox inmediatamente después de que termine la animación de ataque

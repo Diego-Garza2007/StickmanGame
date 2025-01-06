@@ -1,6 +1,7 @@
 import Player from "../objects/Player.js";
 import LifeSystem from "../Systems/LifeSystem.js";
-import CollisionHandler from "../Systems/CollisionHandler.js";
+import PlayerBossCollisionHandler from '../Systems/PlayerBossCollisionHandler.js'
+import Boss from '../objects/Boss.js'; // Importa la clase Boss
 
 export default class RoomFinalScene extends Phaser.Scene {
   constructor() {
@@ -20,6 +21,10 @@ export default class RoomFinalScene extends Phaser.Scene {
     this.player = new Player(this, 80, 400, "player"); // Mueve al jugador al inicio
     this.physics.add.collider(this.player, ground); // Colisión con el suelo
 
+    // Crear al Boss
+    this.boss = new Boss(this, 1700, 390, "BossWalk1");
+    this.physics.add.collider(this.boss, ground); // Colisión con el suelo
+
 
     // Crear o restaurar el sistema de vidas
     if (!this.registry.get("lifeSystem")) {
@@ -37,6 +42,8 @@ export default class RoomFinalScene extends Phaser.Scene {
       this.lifeSystem.createHearts();
     }
 
+    // Crear el manejador de colisiones entre el jugador y el boss
+    this.collisionHandler = new PlayerBossCollisionHandler(this, this.player, this.boss, this.lifeSystem);
 
 
     // Configurar controles personalizados
@@ -56,6 +63,10 @@ export default class RoomFinalScene extends Phaser.Scene {
     // Actualizar al jugador con los controles
     this.player.update(this.keys);
 
+    // Actualizar al Boss
+    if (this.boss) {
+      this.boss.update();
+    }
 
 
     // Verificar si el jugador llega al borde izquierdo para regresar a la habitación anterior

@@ -85,13 +85,21 @@ export default class PreloadScene extends Phaser.Scene {
       this.load.image('NpcIdle22', 'assets/Npc/Layer_22_Npc.png')
       this.load.image('NpcIdle23', 'assets/Npc/Layer_23_Npc.png')
       this.load.image('NpcIdle24', 'assets/Npc/Layer_24_Npc.png')
+
+      // Boss Walk
+      this.load.image('BossWalk1', 'assets/BossWalk/BossWalk1.png')
+      this.load.image('BossWalk2', 'assets/BossWalk/BossWalk2.png')
+      this.load.image('BossWalk3', 'assets/BossWalk/BossWalk3.png')
+      this.load.image('BossWalk4', 'assets/BossWalk/BossWalk4.png')
+      this.load.image('BossWalk5', 'assets/BossWalk/BossWalk5.png')
+      this.load.image('BossWalk6', 'assets/BossWalk/BossWalk6.png')
       
 
       this.load.image('ground', 'assets/images/ground.png');
     }
   
     create() {
-      this.scene.start('MenuScene');
+      this.scene.start('RoomFinalScene');
     }
   }
   
