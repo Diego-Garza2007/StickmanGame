@@ -99,7 +99,7 @@ export default class PreloadScene extends Phaser.Scene {
     }
   
     create() {
-      this.scene.start('RoomFinalScene');
+      this.scene.start('GameScene');
     }
   }
   
